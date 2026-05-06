@@ -1,0 +1,15 @@
+\begin{table}[ht]
+\centering
+\caption{Mean cumulative regret at $T=400$ ($\pm$ std) across 20 trials. Bold: lowest regret per setting.}
+\label{tab:results}
+\begin{tabular}{llcccc}
+\toprule
+Setting & Description & HierTS (proposed) & IndepTS & PoolTS & LinUCB \\
+\midrule
+  A & High heterogeneity ($\sigma=1.5$) & $36.5\pm5.3$ & $42.6\pm5.4$ & $66.7\pm21.1$ & \textbf{$31.9\pm4.2$} \\
+  B & Low heterogeneity ($\sigma=0.3$) & $31.5\pm5.6$ & $40.2\pm5.2$ & \textbf{$23.3\pm7.1$} & $33.8\pm4.1$ \\
+  C & Data-poor task ($p_0=0.05$) & $34.0\pm4.0$ & $36.4\pm4.7$ & $60.7\pm19.0$ & \textbf{$30.0\pm3.3$} \\
+  D & Correlated deviations ($\rho_{\text{true}}=0.5$) & $37.4\pm6.1$ & $41.1\pm5.2$ & $52.5\pm19.1$ & \textbf{$31.0\pm3.8$} \\
+\bottomrule
+\end{tabular}
+\end{table}

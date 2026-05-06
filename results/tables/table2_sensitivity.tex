@@ -1,0 +1,21 @@
+\begin{table}[ht]
+\centering
+\caption{Hyperparameter sensitivity of HierTS (Setting A, $T=200$, mean $\pm$ std across 15 trials). Default values in bold.}
+\label{tab:sensitivity}
+\begin{tabular}{lcc}
+\toprule
+Parameter & Value & Final Regret \\
+\midrule
+  $\lambda$ (global mean precision) & 0.1 & $26.0\pm3.6$ \\
+  $\lambda$ (global mean precision) & 0.5 & $27.3\pm2.9$ \\
+  $\lambda$ (global mean precision) & \textbf{1.0} & \textbf{$26.4\pm3.3$} \\
+  $\lambda$ (global mean precision) & 2.0 & $27.6\pm6.4$ \\
+  $\lambda$ (global mean precision) & 5.0 & $28.3\pm3.5$ \\
+\midrule
+  $a_\sigma = b_\sigma$ (IG shape/rate) & 0.5 & $30.1\pm5.0$ \\
+  $a_\sigma = b_\sigma$ (IG shape/rate) & \textbf{1.0} & \textbf{$26.4\pm3.3$} \\
+  $a_\sigma = b_\sigma$ (IG shape/rate) & 2.0 & $27.6\pm4.7$ \\
+  $a_\sigma = b_\sigma$ (IG shape/rate) & 5.0 & $28.1\pm4.7$ \\
+\bottomrule
+\end{tabular}
+\end{table}
