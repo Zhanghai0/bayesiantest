@@ -1,7 +1,4 @@
-# Hierarchical Bayesian Probit Bandit - PHP2530
-
-Code and simulation results for the PHP2530 final paper, *A Hierarchical
-Bayesian Probit Bandit for Task-Adaptive Tool Selection*.
+# Hierarchical Bayesian Probit Bandit 
 
 The main implementation is NumPy/SciPy based and does not require a GPU.
 
