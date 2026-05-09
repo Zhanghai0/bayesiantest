@@ -37,7 +37,7 @@ sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
 from samplers import (HierProbitBandit, IndepProbitBandit,
                       PooledProbitBandit, LinUCBBandit)
 
-# ── Args ────────────────────────────────────────────────────────────────
+
 parser = argparse.ArgumentParser()
 parser.add_argument('--setting',  type=str, default='ALL',
                     choices=['A', 'B', 'C', 'D', 'ALL'])
