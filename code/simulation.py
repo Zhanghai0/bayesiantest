@@ -58,7 +58,6 @@ os.makedirs(os.path.join(args.outdir, 'checkpoints'), exist_ok=True)
 
 print(f"n_trials={args.n_trials}, T={args.T}, n_gibbs={args.n_gibbs}\n")
 
-# ── Constants ───────────────────────────────────────────────────────────
 N_TASKS = 4
 K_ARMS  = 3
 P_FEAT  = 4
@@ -67,7 +66,6 @@ A_SIG   = 1.0
 B_SIG   = 1.0
 
 
-# ── Data-generating process ─────────────────────────────────────────────
 def make_true_betas(rng, s):
     """
     Return true beta_{k,j} of shape (K, N, P).
@@ -111,7 +109,7 @@ def sample_context(rng):
     return x
 
 
-# ── One trial ───────────────────────────────────────────────────────────
+#One trial 
 def run_one_trial(beta_true, tprob, rng, T, n_gibbs, run_linucb):
     hier   = HierProbitBandit (rng, K_ARMS, N_TASKS, P_FEAT,
                                lam=LAM, a_sig=A_SIG, b_sig=B_SIG)
@@ -166,7 +164,7 @@ def run_one_trial(beta_true, tprob, rng, T, n_gibbs, run_linucb):
     return out
 
 
-# ── Run setting with checkpointing ──────────────────────────────────────
+#Run setting with checkpointing 
 def run_setting(s, n_trials, T, n_gibbs, seed, outdir, run_linucb):
     ckpt = os.path.join(outdir, 'checkpoints', f'ckpt_{s}.npz')
     start = 0
@@ -213,7 +211,7 @@ def run_setting(s, n_trials, T, n_gibbs, seed, outdir, run_linucb):
     return all_h, all_i, all_p, all_l
 
 
-# ── Main loop ───────────────────────────────────────────────────────────
+
 settings = ['A', 'B', 'C', 'D'] if args.setting == 'ALL' else [args.setting]
 results  = {}
 run_linucb = not args.no_linucb
@@ -231,7 +229,7 @@ for s in settings:
     np.savez(os.path.join(args.outdir, f'setting_{s}_regret.npz'), **save_kw)
 
 
-# ── Summary table ───────────────────────────────────────────────────────
+# Summary table 
 rows = []
 methods = [('HierTS', 0), ('IndepTS', 1), ('PoolTS', 2)]
 if run_linucb:
@@ -256,7 +254,6 @@ with open(os.path.join(args.outdir, 'summary_table.csv'), 'w', newline='') as f:
     w.writerows(rows)
 
 
-# ── Quick sanity-check figure ───────────────────────────────────────────
 COLORS = {'HierTS': '#1f77b4', 'IndepTS': '#ff7f0e',
           'PoolTS': '#2ca02c', 'LinUCB': '#9467bd'}
 TITLES = {'A': 'Setting A: High Heterogeneity',

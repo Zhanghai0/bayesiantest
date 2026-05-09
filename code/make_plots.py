@@ -49,9 +49,7 @@ args = parser.parse_args()
 os.makedirs(os.path.join(args.outdir, 'figures'), exist_ok=True)
 os.makedirs(os.path.join(args.outdir, 'tables'),  exist_ok=True)
 
-# ─────────────────────────────────────────────
-# Style
-# ─────────────────────────────────────────────
+
 METHODS  = ['HierTS', 'IndepTS', 'PoolTS', 'LinUCB']
 MLABELS  = {'HierTS' : 'HierTS (proposed)',
             'IndepTS': 'IndepTS',
@@ -71,9 +69,8 @@ DESC = {'A': 'High heterogeneity ($\\sigma=1.5$)',
         'C': 'Data-poor task ($p_0=0.05$)',
         'D': 'Correlated deviations ($\\rho_{\\text{true}}=0.5$)'}
 
-# ─────────────────────────────────────────────
+
 # Load main results
-# ─────────────────────────────────────────────
 results, T = {}, None
 for s in ['A', 'B', 'C', 'D']:
     fpath = os.path.join(args.outdir, f'setting_{s}_regret.npz')
@@ -99,9 +96,8 @@ if not results:
 available = list(results.keys())
 time_axis = np.arange(1, T + 1)
 
-# ─────────────────────────────────────────────
+
 # Figure 1: regret curves (one panel per available setting)
-# ─────────────────────────────────────────────
 n_set = len(available)
 fig, axes = plt.subplots(1, n_set, figsize=(5.2 * n_set, 4.5))
 if n_set == 1: axes = [axes]
@@ -128,9 +124,9 @@ for ext in ['pdf', 'png']:
 print("Saved fig1_regret_curves.pdf")
 plt.close()
 
-# ─────────────────────────────────────────────
-# Figure 2 & paired test: per-task regret (Setting C only, if available)
-# ─────────────────────────────────────────────
+
+# Figure 2 & paired test: per-task regret (Setting C only)
+
 N_TASKS = 4; K_ARMS = 3; P_FEAT = 4
 
 def make_betas_AB_C(rng, sigma=1.5):
@@ -172,7 +168,7 @@ if 'C' in results:
         pt_indep[trial] = np.cumsum(inst_i, axis=1)
         print(f"  Per-task trial {trial+1}/{N_PT} done")
 
-    # ---- Paired Wilcoxon signed-rank test on task-0 final regret ----
+    # Paired Wilcoxon signed-rank test on task-0 final regret 
     final_hier_t0  = pt_hier [:, 0, -1]
     final_indep_t0 = pt_indep[:, 0, -1]
     diff = final_hier_t0 - final_indep_t0
@@ -209,7 +205,7 @@ One-sided $p$-value & %.4f \\
 """ % (N_PT, diff.mean(), np.median(diff), w_stat, w_p))
     print("Saved table3_per_task_test.tex")
 
-    # ---- Figure 2 ----
+    # Figure 2 
     fig3, axes3 = plt.subplots(1, 2, figsize=(11, 4.5))
     tax = np.arange(1, T_PT + 1)
     for label, arr, color, ls in [
@@ -245,9 +241,8 @@ One-sided $p$-value & %.4f \\
     print("Saved fig2_setting_c_per_task.pdf")
     plt.close()
 
-# ─────────────────────────────────────────────
+
 # Figure 3: sensitivity sweep on Setting A
-# ─────────────────────────────────────────────
 print("\nRunning hyperparameter sensitivity (Setting A)...")
 SENS_CONFIGS = {
     'lam':   [0.1, 0.5, 1.0, 2.0, 5.0],
@@ -313,9 +308,8 @@ for ext in ['pdf', 'png']:
 print("Saved fig3_sensitivity.pdf")
 plt.close()
 
-# ─────────────────────────────────────────────
+
 # Table 1: Main results
-# ─────────────────────────────────────────────
 methods_present = [m for m in METHODS
                    if any(m in results[s] for s in available)]
 n_cols = len(methods_present)
@@ -350,9 +344,8 @@ with open(os.path.join(args.outdir, 'tables', 'table1_results.tex'), 'w') as f:
 print("\nSaved table1_results.tex")
 print(table1)
 
-# ─────────────────────────────────────────────
+
 # Table 2: Sensitivity
-# ─────────────────────────────────────────────
 lines2 = [r'\begin{table}[ht]', r'\centering',
           r'\caption{Hyperparameter sensitivity of HierTS (Setting A, $T='+str(T_SENS)+r'$, mean $\pm$ std across '+str(N_SENS)+r' trials). '
           r'Default values in bold.}',

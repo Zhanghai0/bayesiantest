@@ -11,7 +11,6 @@
 //   T=200 dataset).
 //
 //   The non-centered parameterization (NCP) reparameterizes
-//
 //        beta_{k,j} = beta0_k + sigma_k * L(rho_k) z_{k,j},
 //
 //   where z_{k,j} ~ N(0, I_p) is sampled directly and L is the Cholesky

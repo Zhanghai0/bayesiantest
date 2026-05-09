@@ -25,9 +25,8 @@ from scipy.stats import truncnorm
 from scipy.special import ndtr
 
 
-# ──────────────────────────────────────────────────────────────────────
+
 # Vectorized truncated-normal sampling
-# ──────────────────────────────────────────────────────────────────────
 def stn_pos_vec(mus, rng=None):
     """Sample from TN(mu, 1) truncated to (0, inf) — vectorized."""
     mus = np.asarray(mus, dtype=float)
@@ -49,9 +48,8 @@ def stn_neg_scalar(mu, rng=None):
     return float(truncnorm.rvs(-np.inf, -mu, loc=mu, scale=1.0, random_state=rng))
 
 
-# ──────────────────────────────────────────────────────────────────────
+
 # Compound-symmetry helpers
-# ──────────────────────────────────────────────────────────────────────
 def cs_inv(s, r, p):
     """Inverse of sigma2 * [(1-r)I + r 11^T]."""
     c = 1.0/(s*(1-r))
@@ -72,9 +70,8 @@ def eta_to_rho(eta, p):
     return (lo + e)/(1 + e)
 
 
-# ──────────────────────────────────────────────────────────────────────
+
 # Hierarchical Probit Bandit (full model)
-# ──────────────────────────────────────────────────────────────────────
 class HierProbitBandit:
     """
     Full blocked Gibbs sampler for the hierarchical probit model.
@@ -109,7 +106,7 @@ class HierProbitBandit:
         self.Y = {(k,j): [] for k in range(K) for j in range(N)}
         self.Z = {(k,j): np.array([]) for k in range(K) for j in range(N)}
 
-    # -- bandit API ------------------------------------------------------
+    # bandit API 
     def select_arm(self, j, x):
         scores = np.array([ndtr(x @ self.beta[k, j]) for k in range(self.K)])
         # Tiny noise breaks first-round ties (all-zero beta -> all 0.5)
@@ -126,7 +123,7 @@ class HierProbitBandit:
               else stn_neg_scalar(mu, self.rng))
         self.Z[(k,j)] = np.append(self.Z[(k,j)], z)
 
-    # -- Gibbs internals -------------------------------------------------
+    # Gibbs internals
     def _resample_Z(self):
         for k in range(self.K):
             for j in range(self.N):
@@ -211,9 +208,8 @@ class HierProbitBandit:
             self.gibbs_step()
 
 
-# ──────────────────────────────────────────────────────────────────────
+
 # Independent Probit Bandit (per-arm, per-task)
-# ──────────────────────────────────────────────────────────────────────
 class IndepProbitBandit:
     """No information sharing across tasks. Independent N(0, I) prior."""
 
@@ -273,9 +269,8 @@ class IndepProbitBandit:
             self.gibbs_step()
 
 
-# ──────────────────────────────────────────────────────────────────────
+
 # Pooled Probit Bandit (per-arm, all tasks pooled)
-# ──────────────────────────────────────────────────────────────────────
 class PooledProbitBandit:
     """Ignores task labels. One probit model per arm."""
 
@@ -333,9 +328,8 @@ class PooledProbitBandit:
             self.gibbs_step()
 
 
-# ──────────────────────────────────────────────────────────────────────
+
 # LinUCB baseline (Li et al. 2010)
-# ──────────────────────────────────────────────────────────────────────
 class LinUCBBandit:
     """
     Disjoint LinUCB: one ridge regression per (arm, task) pair, with the

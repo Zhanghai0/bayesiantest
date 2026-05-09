@@ -45,7 +45,7 @@ from pathlib import Path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from samplers import HierProbitBandit
 
-# Optional arviz for canonical R-hat / ESS
+
 try:
     import arviz as az
     HAVE_ARVIZ = True
@@ -62,9 +62,7 @@ except ImportError:
     print("WARNING: cmdstanpy not found. PART 2 (Stan cross-check) will be skipped.\n")
 
 
-# ─────────────────────────────────────────────
-# Configuration
-# ─────────────────────────────────────────────
+
 RNG_SEED = 2025
 T_VAL    = 200
 K_ARMS   = 3
@@ -84,9 +82,8 @@ STAN_ITER_WARMUP   = 500
 STAN_ITER_SAMPLING = 500
 
 
-# ─────────────────────────────────────────────
-# 1. Generate fixed dataset (true rho = 0.3)
-# ─────────────────────────────────────────────
+
+# Generate fixed dataset (true rho = 0.3)
 rng_dgp = np.random.default_rng(RNG_SEED)
 sigma2_true = 1.0
 rho_true    = 0.3
@@ -120,9 +117,8 @@ print(f"Fixed dataset: T={T_VAL}, K={K_ARMS}, N={N_TASKS}, P={P_FEAT}")
 print(f"True rho={rho_true}, sigma2={sigma2_true}, mean reward={Y_obs.mean():.3f}\n")
 
 
-# ─────────────────────────────────────────────
-# 2. Adapter: run the bandit Gibbs sampler in batch mode
-# ─────────────────────────────────────────────
+
+# Adapter: run the bandit Gibbs sampler in batch mode
 def run_gibbs_chain(X, arm, task, Y, n_iter, n_burnin, rng, init_mode='prior'):
     """
     Run one Gibbs chain on a fixed dataset. Reuses HierProbitBandit
@@ -195,9 +191,8 @@ def run_gibbs_chain(X, arm, task, Y, n_iter, n_burnin, rng, init_mode='prior'):
     }
 
 
-# ─────────────────────────────────────────────
-# 3. Built-in R-hat / ESS / MCSE
-# ─────────────────────────────────────────────
+
+# Built-in R-hat / ESS / MCSE
 def compute_rhat(chains):
     chains = np.asarray(chains, dtype=float)
     M, N = chains.shape
@@ -269,9 +264,8 @@ def print_diag_table(rows):
               f" {ess:>10.1f} {rhat:>10.3f}{rmark}{emark}")
 
 
-# ─────────────────────────────────────────────
-# 4. PART 1: 4 Gibbs chains
-# ─────────────────────────────────────────────
+
+# 4 Gibbs chains
 print("="*70)
 print("PART 1: Multi-chain Gibbs convergence diagnostics")
 print("="*70)
@@ -320,7 +314,7 @@ diag_inputs = {
 rows = diagnostics_table(diag_inputs, list(diag_inputs.keys()))
 print_diag_table(rows)
 
-# Honest summary stats over ALL monitored params
+
 all_rhats = np.array([r[5] for r in rows if np.isfinite(r[5])])
 all_esss  = np.array([r[4] for r in rows if np.isfinite(r[4])])
 print(f"\nOverall (across all monitored params): "
@@ -338,9 +332,8 @@ with open(os.path.join(out_dir, 'mcmc_diagnostics.csv'), 'w', newline='') as f:
 print(f"\nDiagnostics saved to {out_dir}/mcmc_diagnostics.csv")
 
 
-# ─────────────────────────────────────────────
-# 5. Trace plots
-# ─────────────────────────────────────────────
+
+# Trace plots
 CHAIN_COLORS = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728']
 fig_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'results', 'figures')
 os.makedirs(fig_dir, exist_ok=True)
@@ -405,9 +398,8 @@ print("Saved fig5b_acf.pdf\n")
 plt.close()
 
 
-# ─────────────────────────────────────────────
-# 6. PART 2: Stan cross-check (NCP)
-# ─────────────────────────────────────────────
+
+# Stan cross-check (NCP)
 print("="*70)
 print("PART 2: Independent cross-check against Stan NUTS (NCP model)")
 print("="*70)
@@ -471,9 +463,8 @@ else:
     print("Stan backend not available - skipping cross-check.")
 
 
-# ─────────────────────────────────────────────
-# 7. Posterior comparison (pooled Gibbs vs Stan)
-# ─────────────────────────────────────────────
+
+# Posterior comparison (pooled Gibbs vs Stan)
 gibbs_pool = {
     'beta':  stacked['beta'].reshape(-1, K_ARMS, N_TASKS, P_FEAT),
     'beta0': stacked['beta0'].reshape(-1, K_ARMS, P_FEAT),
@@ -519,9 +510,8 @@ for (g, s, r) in comparisons:
               f" {'(N/A)':>12} {'':>10} {'':>8} {'':>8}")
 
 
-# ─────────────────────────────────────────────
-# 8. Density plot
-# ─────────────────────────────────────────────
+
+# Density plot
 def kde_plot(ax, samples, label, color, ls='-'):
     kde = gaussian_kde(samples)
     lo, hi = np.percentile(samples, [0.5, 99.5])
@@ -573,9 +563,9 @@ print("\nSaved fig4_posterior_validation.pdf")
 plt.close()
 
 
-# ─────────────────────────────────────────────
-# 9. Final summary
-# ─────────────────────────────────────────────
+
+# Final summary
+
 print("\n" + "="*70)
 print("SUMMARY")
 print("="*70)

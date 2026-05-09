@@ -10,3 +10,5 @@ venv/
 results/checkpoints/
 test_results/
 smoke_results/
+code/hierarchical_probit_bandit
+code/hierarchical_probit_bandit.hpp
