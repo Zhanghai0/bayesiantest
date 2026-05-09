@@ -145,9 +145,3 @@ resumes from the last completed trial.
 * **Paired Wilcoxon test** on Setting C task 0 final regret, replacing
   "intervals overlap so it's suggestive" with a defensible p-value.
 
-## Citation
-
-If you use this code, please cite:
-
-> Zhang, H. (2026). *A Hierarchical Bayesian Probit Bandit for
-> Task-Adaptive Tool Selection.* PHP2530 final paper, Brown University.
