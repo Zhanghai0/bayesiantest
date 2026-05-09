@@ -112,8 +112,8 @@ resumes from the last completed trial.
 
 ## Headline results
 
-* **HierTS dominates IndepTS** in every setting by 4–9 cumulative regret
-  units, confirming partial pooling is uniformly beneficial.
+* **HierTS has lower regret than IndepTS** in every primary setting, with gains ranging from about 2.4 to 8.7 cumulative regret units.
+
 * **HierTS avoids the catastrophic failures of PoolTS** on heterogeneous
   settings (A/C/D) while adapting to Setting B where pooling is appropriate.
 * **The Setting D' control** (`ρ_true = 0`, scale-matched to Setting D)
