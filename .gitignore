@@ -5,4 +5,8 @@ logs/
 *.out
 *.err
 bandit_env/
+.venv/
+venv/
 results/checkpoints/
+test_results/
+smoke_results/

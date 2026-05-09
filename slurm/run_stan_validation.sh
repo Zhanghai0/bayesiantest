@@ -5,11 +5,15 @@
 #SBATCH --time=02:00:00
 #SBATCH --mem=16G
 #SBATCH --cpus-per-task=4
-#SBATCH --partition=gpu
 
-cd /oscar/home/hzhan382/bayesiantest
+set -euo pipefail
+
+# CPU job. Submit from the repository root after creating bandit_env.
+module purge
+module load python/3.11
+
+cd "$SLURM_SUBMIT_DIR"
 source bandit_env/bin/activate
-
 mkdir -p logs results/figures results/tables
 
 python code/stan_validation.py
