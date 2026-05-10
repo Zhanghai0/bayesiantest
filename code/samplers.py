@@ -364,5 +364,4 @@ class LinUCBBandit:
         self.b[(k, j)] += float(y) * x
 
     def update(self, n=None):
-        # No MCMC — closed-form ridge update happens in observe().
         pass

@@ -565,7 +565,6 @@ plt.close()
 
 
 # Final summary
-
 print("\n" + "="*70)
 print("SUMMARY")
 print("="*70)
